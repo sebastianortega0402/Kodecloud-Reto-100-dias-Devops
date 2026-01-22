@@ -1,0 +1,84 @@
+🔐 ¿Qué es eso de las llaves SSH?
+Cuando creaste las llaves SSH, en realidad creaste un par de llaves:
+Llave privada 🔑
+
+Archivo: ~/.ssh/id_rsa
+Nunca se comparte
+Se queda en el jump host, con el usuario thor
+
+Llave pública 🔓
+Archivo: ~/.ssh/id_rsa.pub
+Sí se puede compartir
+Se copia a los servidores a los que quieres acceder
+Estas dos llaves están matemáticamente relacionadas.
+
+🧠 ¿Para qué sirven?
+Sirven para que un servidor diga:
+“Si tú puedes demostrar que tienes la llave privada, entonces confío en ti y te dejo entrar sin contraseña.”
+
+🛠️ ¿Qué pasó exactamente cuando ejecutaste ssh-keygen?
+Cuando hiciste:
+ssh-keygen -t rsa -b 4096
+Pasaron estas cosas:
+El sistema creó una llave privada (id_rsa)
+
+
+Creó una llave pública (id_rsa.pub)
+
+Ambas se guardaron en:
+
+ /home/thor/.ssh/
+
+📌 La llave privada nunca sale del jump host.
+
+📤 ¿Qué hiciste cuando usaste ssh-copy-id?
+Por ejemplo:
+ssh-copy-id tony@app-server-1
+Este comando hizo automáticamente:
+Se conectó al App Server 1 como el usuario tony
+Copió el contenido de:
+
+ /home/thor/.ssh/id_rsa.pub
+Lo agregó al archivo:
+
+ /home/tony/.ssh/authorized_keys
+ en el App Server
+Ese archivo (authorized_keys) es básicamente una lista de llaves públicas permitidas.
+
+🔍 ¿Qué pasa ahora cuando haces ssh tony@app-server-1?
+Ocurre esto (simplificado):
+El servidor dice:
+ “¿Quién eres?”
+Tu jump host responde:
+ “Soy thor y tengo esta llave pública”
+El servidor revisa:
+ “¿Esta llave está en authorized_keys de tony?”
+El servidor envía un reto criptográfico 🔐
+Tu máquina lo firma usando la llave privada
+El servidor verifica la firma con la llave pública
+Si todo coincide → ACCESO CONCEDIDO ✅
+ ❌ Nunca se envía la contraseña
+
+🔒 ¿Por qué es más seguro que usar contraseñas?
+No se transmiten contraseñas por la red
+No es vulnerable a fuerza bruta
+La llave privada está protegida por permisos del sistema
+Solo funciona si ambas llaves coinciden
+
+## 🧾 Resumen rápido
+
+| Acción          | Qué hiciste realmente                          |
+|-----------------|-----------------------------------------------|
+| ssh-keygen      | Creaste identidad criptográfica                |
+| id_rsa          | Tu identidad secreta                           |
+| id_rsa.pub      | Tu identidad pública                           |
+| ssh-copy-id     | Registraste tu identidad en otro servidor      |
+| authorized_keys | Lista de identidades permitidas                |
+| ssh             | Prueba de identidad sin contraseña             |
+
+
+🧠 Analogía sencilla
+Llave privada = tu llave de casa
+Llave pública = copia del candado
+authorized_keys = lista de llaves aceptadas
+SSH = el guardia que verifica que tu llave abre la puerta
