@@ -1,0 +1,56 @@
+
+
+El paquete cronie es un componente del sistema operativo (especialmente en Linux) que se usa para programar la ejecución automática de tareas en momentos específicos o repetidos — por ejemplo, hacer que un script se ejecute cada día, cada hora, etc.
+
+🛠 ¿Qué hace exactamente?
+🔹 Es un daemon (proceso en segundo plano) llamado crond que queda corriendo continuamente.
+ 🔹 Su función principal es leer archivos de programación (“cron jobs”) y ejecutar programas o scripts en los tiempos que tú especifiques.
+ 🔹 Puedes especificar tareas programadas usando archivos como crontab, donde defines frecuencia y comandos a ejecutar. Esto es útil para:
+Hacer respaldos automáticos.
+
+
+Ejecutar scripts de mantenimiento.
+
+
+Generar reportes periódicos.
+
+
+Actualizar algo cada cierto tiempo.
+
+
+📌 En muchos sistemas cronie es la implementación estándar de cron (es decir, el sistema tradicional de tareas programadas en Unix/Linux), con mejoras como soporte PAM y otras.
+
+🧠 Ejemplo sencillo
+Si quieres que un script se ejecute todos los días a las 3 AM, lo configuras en un archivo crontab y cronie se encarga de ejecutarlo automáticamente cada día a esa hora
+Instalar cronie y arrancar el servicio crond
+Ejecuta estos pasos en cada app server como usuario con privilegios (root o sudo).
+1. Instalar cronie
+yum install -y cronie
+2. Iniciar el servicio crond
+systemctl start crond
+3. Habilitar crond para que inicie al arrancar
+systemctl enable crond
+4. Verificar que esté corriendo
+systemctl status crond
+Debe mostrarse como active (running).
+
+b. Agregar el cron job para el usuario root
+El cron que piden es:
+*/5 * * * * echo hello > /tmp/cron_text
+Esto escribirá hello en /tmp/cron_text cada 5 minutos.
+Opción recomendada (editar crontab de root)
+Edita el crontab de root:
+crontab -e
+Agrega esta línea:
+*/5 * * * * echo hello > /tmp/cron_text
+Guarda y sal.
+
+
+Verificar que quedó configurado
+crontab -l
+
+Verificación final (opcional)
+Después de 5 minutos:
+cat /tmp/cron_text
+La salida debería ser:
+Hello
