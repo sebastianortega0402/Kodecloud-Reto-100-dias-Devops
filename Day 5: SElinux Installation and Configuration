@@ -1,0 +1,68 @@
+🔐 ¿Qué es SELinux?
+SELinux significa Security-Enhanced Linux (Linux con Seguridad Mejorada).
+Es un módulo de seguridad del sistema operativo Linux que agrega una capa extra de protección además de los permisos normales (lectura, escritura, ejecución).
+
+🛡️ ¿Para qué sirve SELinux?
+SELinux controla qué puede hacer cada proceso en el sistema, incluso si ese proceso:
+Se ejecuta como root
+
+
+Tiene permisos normales de Linux
+
+
+Por ejemplo:
+Un servidor web solo puede acceder a ciertos archivos
+
+
+Una aplicación no puede modificar archivos del sistema
+
+
+Si un servicio es comprometido, SELinux limita el daño
+
+
+Esto se conoce como Control de Acceso Obligatorio (MAC).
+
+⚙️ Modos de SELinux (lo que viste en el archivo)
+En el archivo /etc/selinux/config aparecen estos valores:
+1️⃣ SELINUX=enforcing
+🔒 Modo estricto
+SELinux aplica las reglas
+
+
+Bloquea accesos no permitidos
+
+
+Es el modo más seguro
+
+
+
+2️⃣ SELINUX=permissive
+⚠️ Modo permisivo
+No bloquea nada
+
+
+Solo registra alertas en los logs
+
+
+Se usa para pruebas y debugging
+
+
+
+3️⃣ SELINUX=disabled
+❌ Deshabilitado
+SELinux no funciona
+
+
+No aplica reglas ni registra eventos
+
+
+Requiere reinicio para activarse o desactivarse
+
+ Instalar los paquetes requeridos de SELinux
+sudo yum install -y selinux-policy selinux-policy-targeted libselinux-utils policycoreutils
+
+Deshabilitar SELinux de forma permanente (sin reiniciar)
+sudo vi /etc/selinux/config
+
+Busca esta línea: SELINUX=enforcing o SELINUX=permissive
+Y cámbiala por: SELINUX=disabled
