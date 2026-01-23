@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Variables
+SOURCE_DIR="/var/www/html/beta"
+BACKUP_DIR="/backup"
+ZIP_NAME="xfusioncorp_beta.zip"
+BACKUP_SERVER="172.16.238.16"
+BACKUP_USER="clint"
+REMOTE_DIR="/backup"
+
+# Create zip archive
+zip -r ${BACKUP_DIR}/${ZIP_NAME} ${SOURCE_DIR}
+
+# Copy archive to Nautilus Backup Server
+scp ${BACKUP_DIR}/${ZIP_NAME} ${BACKUP_USER}@${BACKUP_SERVER}:${REMOTE_DIR}
+
+Dar permisos de ejecución
+chmod +x /scripts/beta_backup.sh
+🗜️ Crear el archivo ZIP
+zip -r ${BACKUP_DIR}/${ZIP_NAME} ${SOURCE_DIR}
+
+🔍 Desglose:
+zip → comando para comprimir
+
+
+-r → recursivo (incluye subdirectorios y archivos)
+
+
+${BACKUP_DIR}/${ZIP_NAME} → ruta y nombre del ZIP
+
+
+${SOURCE_DIR} → contenido a comprimir
+
+
+📌 Resultado:
+/backup/xfusioncorp_beta.zip
+
+📂 Contiene todo /var/www/html/beta
+
+🌐 Copiar el backup al servidor remoto
+scp ${BACKUP_DIR}/${ZIP_NAME} ${BACKUP_USER}@${BACKUP_SERVER}:${REMOTE_DIR}
+
+🔍 Desglose:
+scp → copia segura por SSH
+
+
+${BACKUP_DIR}/${ZIP_NAME} → archivo local
+
+
+${BACKUP_USER}@${BACKUP_SERVER} → usuario + IP remota
+
+
+:${REMOTE_DIR} → carpeta destino en el servidor remoto
+
+
+📌 Traducción humana:
+“Copia el archivo ZIP al directorio /backup del servidor 172.16.238.16 usando el usuario clint”
+🔐 No pide contraseña porque se usan SSH keys
+
