@@ -1,108 +1,77 @@
 ![Ansible](https://github.com/sebastianortega0402/Kodecloud-Reto-100-dias-Devops/blob/90ac0d156923d91301c9655ab20e9bdb19d3505c/images/ANSIBLE.png)
 
-🤖 ¿Qué es Ansible?
+# 🤖 Ansible – Automatización y Gestión de Configuración
 
-Ansible es una herramienta de automatización y gestión de configuración muy usada en DevOps.
-Permite administrar servidores y aplicaciones de forma simple, segura y escalable.
+Ansible es una herramienta **muy usada en DevOps** para administrar servidores y aplicaciones de forma **simple, segura y escalable**.
 
 Con Ansible puedes:
 
-⚙️ Configurar servidores
+- ⚙️ Configurar servidores  
+- 📦 Instalar software  
+- 🔁 Ejecutar tareas repetitivas  
+- 🚀 Orquestar despliegues  
+- 🖥️ Administrar múltiples servidores al mismo tiempo  
 
-📦 Instalar software
+Todo esto desde una sola máquina llamada **Ansible Controller** (en este caso, el Jump Host).
 
-🔁 Ejecutar tareas repetitivas
+---
 
-🚀 Orquestar despliegues
+## 🧠 Idea principal
 
-🖥️ Administrar múltiples servidores al mismo tiempo
+En lugar de conectarte **servidor por servidor** y ejecutar comandos manualmente, con Ansible solo dices:
 
-Todo esto desde una sola máquina, llamada Ansible Controller (en este caso, el Jump Host).
+> “Haz esta tarea en todos estos servidores”
 
-🧠 Idea principal
+y Ansible se encarga del resto ✨
 
-En lugar de conectarte servidor por servidor y ejecutar comandos manualmente, con Ansible solo dices:
+---
 
-“Haz esta tarea en todos estos servidores”
+## 🔌 ¿Cómo funciona Ansible?
 
-Y Ansible se encarga del resto ✨
+### 1️⃣ Controller
+- Máquina donde se instala Ansible  
+- Desde aquí se ejecutan los **comandos y playbooks**  
+- Ejemplo: Jump Host  
 
-🔌 ¿Cómo funciona Ansible?
+### 2️⃣ Managed Nodes
+- Servidores que Ansible administra  
+- Ejemplos: App Servers, DB Servers  
 
-1️⃣ Controller
+### 3️⃣ Comunicación
+- Usa **SSH**  
+- ❌ No necesita agentes en los servidores  
+- 🔑 Usa **llaves SSH** (password-less authentication)  
 
-Es la máquina donde se instala Ansible
+---
 
-Desde aquí se ejecutan los comandos y playbooks
+## 📄 Componentes clave de Ansible
 
-Ejemplo: Jump Host
+| Componente | Descripción | Ejemplo |
+|-----------|------------|--------|
+| **Inventory** | Archivo donde defines los servidores que serán administrados | `app1`, `app2`, `db1` |
+| **Módulos** | Pequeños programas que ejecutan tareas específicas | `ping` → probar conexión, `yum/apt` → instalar paquetes, `service` → manejar servicios, `copy` → copiar archivos |
+| **Playbooks (YAML)** | Archivos donde describes qué quieres que pase, no cómo hacerlo | ```yaml\n- hosts: app\n  tasks:\n    - name: Install httpd\n      yum:\n        name: httpd\n        state: present\n``` |
 
-2️⃣ Managed Nodes
+Ejemplo de módulo:
 
-Son los servidores que Ansible administra
-
-Ejemplos:
-
-App Servers
-
-DB Servers
-
-3️⃣ Comunicación
-
-Usa SSH
-
-❌ No necesita agentes en los servidores
-
-🔑 Utiliza llaves SSH (password-less authentication)
-
-📄 ¿Qué usa Ansible para trabajar?
-🔹 Inventory
-
-Archivo donde defines los servidores que serán administrados:
-
-app1
-app2
-db1
-
-🔹 Módulos
-
-Pequeños programas que ejecutan tareas específicas:
-
-ping → probar conexión
-
-yum / apt → instalar paquetes
-
-service → manejar servicios
-
-copy → copiar archivos
-
-Ejemplo:
-
+```bash
 ansible all -m ping
-
-🔹 Playbooks (YAML)
-
-Archivos donde describes qué quieres que pase, no cómo hacerlo.
-
-Ejemplo:
-
-- hosts: app
-  tasks:
-    - name: Install httpd
-      yum:
-        name: httpd
-        state: present
 
 ⭐ Ventajas principales de Ansible
 
 ✔ No necesita agentes
+
 ✔ Usa SSH
+
 ✔ Fácil de aprender
+
 ✔ Usa YAML (legible para humanos)
+
 ✔ Escala muy bien
+
 ✔ Ideal para automatización y CI/CD
 
-🔁 ¿Para qué se usa Ansible en la vida real?
+🔁 Casos de uso reales
 
 Configurar servidores nuevos
 
@@ -114,33 +83,30 @@ Aplicar parches
 
 Administración masiva de infraestructura
 
-🧠 Conceptos clave antes de empezar
+🧠 Conceptos previos importantes
 
 pip3 instala paquetes de Python
 
-Si instalas con un usuario normal, Ansible queda disponible solo para ese usuario
+Instalación con usuario normal → Ansible solo disponible para ese usuario
 
-Si instalas con root (sudo), Ansible queda disponible globalmente
+Instalación con sudo → Ansible disponible globalmente
 
 El binario normalmente se instala en:
 
 /usr/local/bin/ansible
-
-
-👉 Por eso usamos sudo con pip3.
+Por eso usamos sudo con pip3
 
 📦 Instalación de Ansible
-Instalar:
+
+# Instalar Ansible
 sudo pip3 install ansible==4.9.0
 
-Verificar versión:
+# Verificar versión
 ansible --version
 
-Confirmar ubicación:
+# Confirmar ubicación
 which ansible
-
-
 Salida esperada:
 
 /usr/local/bin/ansible
-Ese directorio está en el PATH global, por eso todos los usuarios pueden usarlo.
+Ese directorio está en el PATH global, por eso todos los usuarios pueden usar Ansible.
