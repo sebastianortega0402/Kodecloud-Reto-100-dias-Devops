@@ -2,45 +2,85 @@
 
 
 🗄️ ¿Qué es MariaDB?
-MariaDB es un sistema de gestión de bases de datos (database server).
- Su función es almacenar, organizar y entregar información a las aplicaciones.
-En este caso:
-La aplicación Nautilus necesita conectarse a MariaDB
 
-Para leer y guardar datos críticos
+MariaDB es un sistema de gestión de bases de datos (Database Server).
+Su función principal es almacenar, organizar y entregar información a las aplicaciones.
 
-Si MariaDB está caído, la aplicación no puede funcionar
+En este escenario:
+
+🧩 La aplicación Nautilus necesita conectarse a MariaDB
+
+📥 Para leer y guardar datos críticos
+
+❌ Si MariaDB está caído, la aplicación no puede funcionar
+
 ❌ ¿Qué estaba mal?
-El problema NO era la red ni la aplicación.
-El error real fue:
-👉 El directorio de datos de MariaDB no existía
+
+El problema NO era:
+
+🚫 La red
+
+🚫 La aplicación
+
+👉 El error real fue que el directorio de datos de MariaDB no existía:
+
 /var/lib/mysql
 
-Ese directorio es donde MariaDB:
-Guarda las bases de datos
-Almacena tablas, usuarios y configuraciones internas
-Al no existir:
+📂 ¿Para qué sirve /var/lib/mysql?
+
+Este directorio es fundamental porque MariaDB lo usa para:
+
+🗄️ Guardar las bases de datos
+
+📊 Almacenar tablas
+
+👤 Gestionar usuarios
+
+⚙️ Mantener configuraciones internas
+
+❗ Al no existir el directorio:
+
 MariaDB no podía inicializarse
+
 El servicio fallaba al arrancar
+
 Nautilus no podía conectarse a la base de datos
 
-Por eso veíamos el error al ejecutar:
+Por eso aparecía el error al ejecutar:
+
 systemctl start mariadb
 
 🛠️ ¿Cómo se corrigió el problema?
-⚠️ Nota: Este proceso crea una base limpia.
- Si esta app depende de datos previos y no hay backup, esos datos ya no están en el sistema.
-1️⃣ Crea el directorio de datos
+
+⚠️ Nota importante
+Este procedimiento crea una base de datos limpia.
+Si la aplicación dependía de datos anteriores y no existe un backup, esos datos ya no están disponibles.
+
+1️⃣ Crear el directorio de datos
+
 sudo mkdir -p /var/lib/mysql
 
-2️⃣ Asigna permisos correctos
+2️⃣ Asignar permisos correctos
+
 sudo chown -R mysql:mysql /var/lib/mysql
 sudo chmod 755 /var/lib/mysql
-3️⃣ Inicializa la base de datos
-Ejecuta uno de estos (usa el primero si existe):
+
+3️⃣ Inicializar la base de datos
+
+
+Ejecuta el siguiente comando (usa el primero si está disponible en tu sistema):
+
 sudo mariadb-install-db --user=mysql --datadir=/var/lib/mysql
-4️⃣ Levanta el servicio MariaDB
+
+4️⃣ Levantar el servicio MariaDB
+
 sudo systemctl start mariadb
-5️⃣ Verifica estado
+
+5️⃣ Verificar el estado del servicio
+
 sudo systemctl status mariadb
+
+
+✅ Si el estado es active (running), MariaDB está funcionando correctamente.
+
 
