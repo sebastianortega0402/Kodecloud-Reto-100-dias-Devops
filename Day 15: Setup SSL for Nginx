@@ -1,0 +1,85 @@
+1️⃣ Qué es nginx
+Nginx es un servidor web que puede:
+Servir páginas web (index.html, imágenes, etc.)
+
+Manejar HTTPS (SSL/TLS)
+Hacer de proxy para otras aplicaciones (por ejemplo, aplicaciones en Python, Node.js, etc.)
+Balancear carga entre varios servidores
+
+
+🔑 Conceptos clave:
+Concepto
+Explicación
+Server
+Es un bloque dentro de nginx que define un sitio web, su puerto, dominio y raíz.
+Listen
+Indica en qué puerto y protocolo (http o https) va a escuchar nginx.
+root
+Carpeta desde donde nginx sirve los archivos web (document root).
+SSL Certificate / Key
+Certificado y llave para habilitar HTTPS en un bloque server.
+
+1️⃣ Instalar Nginx (stapp01)
+sudo yum install -y nginx
+
+Habilitar y arrancar:
+sudo systemctl enable nginx
+sudo systemctl start nginx
+
+Verifica:
+sudo systemctl status nginx
+
+Debe estar active (running).
+
+2️⃣ Mover certificado y llave a ubicación correcta
+Ubicación estándar para SSL en nginx:
+Certificados: /etc/nginx/ssl
+
+
+Crear directorio
+sudo mkdir -p /etc/nginx/ssl
+
+Mover archivos
+sudo mv /tmp/nautilus.crt /etc/nginx/ssl/
+sudo mv /tmp/nautilus.key /etc/nginx/ssl/
+
+Ajustar permisos
+sudo chmod 600 /etc/nginx/ssl/nautilus.key
+sudo chmod 644 /etc/nginx/ssl/nautilus.crt
+
+
+3️⃣ Configurar Nginx para HTTPS
+Edita el archivo principal:
+sudo vi /etc/nginx/nginx.conf
+
+Busca el bloque server y déjalo así (o agrega uno nuevo):
+server {
+    listen 443 ssl;
+    server_name _;
+
+    ssl_certificate     /etc/nginx/ssl/nautilus.crt;
+    ssl_certificate_key /etc/nginx/ssl/nautilus.key;
+
+    root /usr/share/nginx/html;
+    index index.html;
+}
+
+💡 No borres otros bloques; solo asegúrate de que este exista.
+
+4️⃣ Crear index.html
+echo "Welcome!" | sudo tee /usr/share/nginx/html/index.html
+
+Verifica:
+cat /usr/share/nginx/html/index.html
+
+
+5️⃣ Validar configuración y reiniciar nginx
+sudo nginx -t
+
+Si dice:
+syntax is ok
+test is successful
+
+Reinicia:
+sudo systemctl restart nginx
+
