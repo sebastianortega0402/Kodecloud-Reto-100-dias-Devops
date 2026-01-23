@@ -1,3 +1,6 @@
+![MARIADB](https://github.com/sebastianortega0402/Kodecloud-Reto-100-dias-Devops/blob/36b9326add591a908de670cc9a6df093eea89f32/images/Maria%20DB.png)
+
+
 🗄️ ¿Qué es MariaDB?
 MariaDB es un sistema de gestión de bases de datos (database server).
  Su función es almacenar, organizar y entregar información a las aplicaciones.
